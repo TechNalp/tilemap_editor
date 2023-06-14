@@ -1,10 +1,28 @@
+
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <div class="vh-100 position-relative">
+  <navbar/>
+  <div class="position-relative bottom-0 bg-danger">
+    <editor />
+  </div>
+</div>
+  
 </template>
+
+
+
+<script lang="ts">
+  import navbar from '@/components/navbar.vue'
+  import editor from '@/components/editor/editorComponent.vue'
+  
+  export default {
+  components: {
+    navbar,
+    editor,
+  }
+}
+</script>
+
 
 <style lang="scss">
 #app {

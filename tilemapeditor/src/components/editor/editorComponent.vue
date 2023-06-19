@@ -1,9 +1,8 @@
 <template>
-    <div class="row h-100">
-    <tabsMenu class="col"/>
-    <tabsContent class="col-auto bg-warning"/>
+    <div class="d-flex flex-column w-100 flex-fill">
+    <tabsMenu class="d-flex flex-row w-100"/>
+    <tabsContent class="col-auto"/>
     </div>
-    
 </template>
 
 

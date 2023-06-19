@@ -1,36 +1,43 @@
+<script setup lang="ts">
+
+</script>
 
 <template>
-  <div class="vh-100 position-relative">
-  <navbar/>
-  <div class="position-relative bottom-0 bg-danger">
-    <editor />
-  </div>
-</div>
-  
+    <div class="d-flex flex-column h-100">
+        <navbar/>
+        <editor/>
+    </div>
+
 </template>
 
 
-
 <script lang="ts">
-  import navbar from '@/components/navbar.vue'
-  import editor from '@/components/editor/editorComponent.vue'
-  
-  export default {
-  components: {
-    navbar,
-    editor,
-  }
+import navbar from '@/components/navbar.vue'
+import editor from '@/components/editor/editorComponent.vue'
+import { ref } from 'vue';
+
+export default {
+    components: {
+        navbar,
+        editor,
+    },
 }
 </script>
 
 
 <style lang="scss">
+
+html, body {
+    height: 100%;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+    height: 100%;
 }
 
 nav {

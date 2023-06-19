@@ -1,12 +1,8 @@
 <template>
-    <div id="editorComponent" class="row h-100 w-100 mx-0">
-
-      <tabsMenu/> <!-- onglet -->
-
-      <tabsContent /> <!-- contenu de l'onglet -->
-
+    <div class="d-flex flex-column w-100 flex-fill">
+    <tabsMenu class="d-flex flex-row w-100"/>
+    <tabsContent class="col-auto"/>
     </div>
-    
 </template>
 
 
@@ -20,5 +16,6 @@
             tabsMenu,
             tabsContent,
         }
+
     }
 </script>

@@ -1,7 +1,10 @@
 <template>
-    <div class="row h-100">
-    <tabsMenu class="col"/>
-    <tabsContent class="col-auto bg-warning"/>
+    <div id="editorComponent" class="row h-100 w-100 mx-0">
+
+      <tabsMenu/> <!-- onglet -->
+
+      <tabsContent /> <!-- contenu de l'onglet -->
+
     </div>
     
 </template>
@@ -17,6 +20,5 @@
             tabsMenu,
             tabsContent,
         }
-
     }
 </script>

@@ -1,10 +1,13 @@
 
 <template>
   <div class="vh-100 position-relative">
-  <navbar/>
-  <div class="position-relative bottom-0 bg-danger">
-    <editor />
-  </div>
+
+    <navbar/>
+
+    <div id="containerApp" class="position-relative bottom-0" >
+      <editor />
+    </div>
+
 </div>
   
 </template>

@@ -19,13 +19,13 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
-        run: npm i
+        run: npm --prefix ./tilemapeditor/ ci
 
       - name: Lint code
-        run: npm run lint
+        run: npm --prefix ./tilemapeditor/ run lint
 
       - name: Run tests
-        run: npm run test
+        run: npm --prefix ./tilemapeditor/ run test
 
       - name: Build project
-        run: npm run build
+        run: npm --prefix ./tilemapeditor/ run build

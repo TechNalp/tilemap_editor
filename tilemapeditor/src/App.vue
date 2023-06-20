@@ -8,7 +8,7 @@
         <editor/>
     </div>
 
-  <CreationMapModal v-bind:shown="showCreationModal" @cancel="closeModal()" @ok="createTileMap()"></CreationMapModal>
+  <CreationMapModal v-bind:shown="showCreationModal" @cancel="closeModal()" @ok="createTileMap"></CreationMapModal>
 </template>
 
 
@@ -40,8 +40,8 @@
       this.showCreationModal = false;
     },
 
-    createTileMap() {
-      this.tileMap = new Tilemap("new map", 10, 10, 10);
+    createTileMap(payload : any) {
+      this.tileMap = new Tilemap(payload.name, payload.width, payload.height, payload.size);
       this.closeModal();
     }
   }

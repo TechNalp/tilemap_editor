@@ -33,6 +33,8 @@
                                 <input type="number" class="form-control" aria-label="Small"
                                     aria-describedby="inputGroup-sizing-sm" required v-model="height">
                             </div>
+
+                            
                         </div>
 
                         <div style="text-align: right;">
@@ -96,6 +98,7 @@ export default {
 
 .modal-block {
     position: absolute;
+    background-color: #1e2f33;
     top: 100px;
     left: calc(50% - (30rem / 2));
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row h-100 w-100">
+  <div id="tab-content" class="d-flex flex-row w-100">
     <canvasComponent />
     <sideMenu />
   </div>
@@ -18,3 +18,10 @@
         }
     }
 </script>
+
+<style>
+    #tab-content {
+        flex: 1 1 auto;
+        flex-flow: row;
+    }
+</style>

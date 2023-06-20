@@ -1,7 +1,7 @@
 <template>
-    <div class="d-flex flex-column w-100 flex-fill">
-    <tabsMenu class="d-flex flex-row w-100"/>
-    <tabsContent class="col-auto"/>
+    <div id="editor" class="d-flex flex-column w-100">
+        <tabsMenu/>
+        <tabsContent/>
     </div>
 </template>
 
@@ -19,3 +19,10 @@
 
     }
 </script>
+
+<style>
+    #editor {
+        flex: 1 1 auto;
+        flex-flow: column;
+    }
+</style>

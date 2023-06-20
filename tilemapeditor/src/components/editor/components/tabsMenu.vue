@@ -1,3 +1,3 @@
 <template>
-    <div><p>menu</p></div>
+    <div class="w-100 bg-light text-center"><p>Menu</p></div>
 </template>

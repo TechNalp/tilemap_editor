@@ -2,7 +2,6 @@
     import Tilemap from '@/models/tilemap';
     import ProjectSingleton from '@/models/projectSingleton';
     import { ref } from 'vue';
-    import { Ref } from 'vue';
 
     let showCreationModal = ref(true);
     let tileMaps = ProjectSingleton.getInstance().projectList.value;

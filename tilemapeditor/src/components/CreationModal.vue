@@ -1,5 +1,28 @@
+<script setup>
+    import {ref} from 'vue';
+    import {defineProps} from 'vue';
+    import {defineEmits} from 'vue';
+    const props = defineProps(['shown']);
+    const emit = defineEmits(['cancel', 'ok']);
+
+    let name = ref("");
+    let width = ref(20);
+    let height = ref(20);
+
+    const cancel = () => {
+        emit('cancel');
+    };
+
+    const ok = () => {
+        if (name && width && height) {
+            emit('ok', { name: name.value, width: width.value, height: height.value });
+        }
+    }
+
+</script>
+
 <template>
-    <div v-if="shown">
+    <div v-if="props.shown">
         <div class="overlay"></div>
         <div class="modal-block">
             <div class="card" style="width: 30rem; display : block;" id="creationModal">
@@ -38,8 +61,8 @@
                         </div>
 
                         <div style="text-align: right;">
-                            <button type="reset" class="btn btn-secondary btn-sm" @click="(e) => cancel(e)">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-sm" @click="(e) => ok(e)"
+                            <button type="reset" class="btn btn-secondary btn-sm" @click="cancel()">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-sm" @click="ok()"
                                 style="margin-left: 5px;">OK</button>
                         </div>
 
@@ -50,44 +73,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent ({
-    name: "CreationMapModal",
-
-    props: {
-        shown: Boolean,
-    },
-
-    data() {
-        return {
-            name: "",
-            width: null,
-            height: null
-        }
-    },
-
-    methods: {
-
-        cancel(e:Event) {
-            console.log(e);
-            this.$emit('cancel');
-        },
-
-        ok(e:Event) {
-            if (this.name && this.width && this.height) {
-                this.$emit('ok', { name: this.name, width: this.width, height: this.height });
-            }
-
-        }
-
-    }
-
-})
-
-</script>
 
 <style>
 .overlay {

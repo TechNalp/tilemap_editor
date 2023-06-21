@@ -1,47 +1,39 @@
-<template>
-    <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link">Fichier
-                            <span class="visually-hidden">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">Edition</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">Documentation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link">A propos</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</template>
-
-
-<script lang="ts">
-import {Vue} from 'vue-class-component';
-
-
-export default class navbar extends Vue {
-}
-
+<script setup lang="ts">
+import PopupLogin from "@/components/login/login_popup.vue";
 </script>
 
+<template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid mx-5">
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link"
+              >Fichier
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">Edition</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">Documentation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">A propos</a>
+          </li>
+        </ul>
+        <button class="btn btn-secondary my-2 my-sm-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Login
+        </button>
+      </div>
+    </div>
+  </nav>
+  <PopupLogin></PopupLogin>
+</template>
 
 <style>
-
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
-
-#navbar {
-    flex: 0 1 auto;
-}
-
 </style>

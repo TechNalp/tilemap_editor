@@ -6,6 +6,7 @@ export default class ProjectSingleton {
     selectedProject : number | null = null;
 
     private constructor() {
+        return;
     }
 
     static getInstance (){

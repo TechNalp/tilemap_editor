@@ -2,14 +2,14 @@ export default class Tilemap {
     name : string;
     width : number;
     height : number;
-    size : number;
+    cellSize : number;
     layers : any[] = [];
     selected = false;
     constructor(name : string, width : number, height : number, size : number) {
         this.name = name;
         this.width = width;
         this.height = height;
-        this.size = size;
+        this.cellSize = size;
         this.newCalc("layer 1");
     }
 

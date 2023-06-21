@@ -9,7 +9,7 @@
 
 
 <script lang="ts">
-    import tabsMenu from '@/components/editor/components/tabsMenu.vue'
+    //import tabsMenu from '@/components/editor/components/tabsMenu.vue'
     import tabsContent from '@/components/editor/components/tabsContent.vue'
     import Tilemap from '@/models/tilemap'
     import CreationMapModal from '@/components/CreationModal.vue'
@@ -18,7 +18,7 @@
     export default defineComponent({
         
         components: {
-            tabsMenu,
+            //tabsMenu,
             tabsContent,
             CreationMapModal,
         },

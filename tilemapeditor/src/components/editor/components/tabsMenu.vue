@@ -1,3 +1,29 @@
+<script setup lang="ts">
+    import ProjectSingleton from '@/models/projectSingleton';
+    import Tilemap from '@/models/tilemap';
+    let maps = ProjectSingleton.getInstance().projectList;
+    let selecedMap = ProjectSingleton.getInstance().selectedProject;
+
+    const changeTab = (itemMap : Tilemap) => {
+        selecedMap.value = maps.value.findIndex(map => map == itemMap);
+    };
+
+    const deleteMap = (itemMap : Tilemap) => {
+        maps.value = maps.value.filter(map => map != itemMap);
+        if(selecedMap.value)
+        if (itemMap == maps.value.at(selecedMap.value)) {
+            selecedMap.value = 0;
+        }
+    };
+
+    const isMapSelected = (mapItem : Tilemap) => {
+        if(selecedMap.value != null)
+        return mapItem == maps.value.at(selecedMap.value);
+
+        return false;
+    }
+</script>
+
 <template>
     <ul class="nav nav-tabs">
         <li class="nav-item tab-bar" v-for="(map, index) in maps" v-bind:key="index">
@@ -13,58 +39,7 @@
         </li>
     </ul>
 </template>
-
-<script lang="js">
-import { defineComponent } from 'vue'
-export default defineComponent({
-    props: {
-        mapsProps: {
-            type: Object,
-            required: true
-        },
-        selectedMapProps: {
-            type: Object,
-            required: true
-        }
-    },
-
-    data() {
-        return {
-            maps: this.mapsProps,
-            selectedMap: this.selectedMapProps
-        }
-    },
-
-    methods : {
-        changeTab(itemMap) {
-            this.selecedMap = this.maps.find(map => map == itemMap);
-        },
-
-        deleteMap(itemMap) {
-            this.maps = this.maps.filter(map => map != itemMap);
-            if (itemMap == this.selecedMap) {
-                this.selecedMap = this.maps.at(0);
-            }
-            localStorage.setItem("maps", JSON.stringify(this.maps));
-        },
-
-        isMapSelected(mapItem) {
-            console.log("true")
-            return mapItem == this.selecedMap;
-        }
-    },
-
-    watch: {
-        mapsProps(newValue) {
-            this.maps = newValue;
-        },
-
-        selectedMapProps(newValue) {
-            this.selectedMap = newValue
-        }
-    }
-})
-</script>
+  
 
 <style>
 .tab-head {

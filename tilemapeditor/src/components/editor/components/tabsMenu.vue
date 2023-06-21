@@ -25,7 +25,7 @@
 </script>
 
 <template>
-    <ul class="nav nav-tabs">
+    <ul id="tabs-menu" class="nav nav-tabs d-flex flex-row w-100">
         <li class="nav-item tab-bar" v-for="(map, index) in maps" v-bind:key="index">
             <div v-bind:class="{ 'nav-link active': isMapSelected(map), 'nav-link': !isMapSelected(map) }">
                 <span aria-current="page" class="tab-head" v-on:click="changeTab(map)">{{ map.name }}</span>
@@ -39,10 +39,15 @@
         </li>
     </ul>
 </template>
-  
+
 
 <style>
 .tab-head {
     cursor: default;
+}
+
+#tabs-menu {
+    flex: 1 1 50px;
+    max-height: 50px;
 }
 </style>

@@ -13,19 +13,19 @@
 
     const createTileMap = (payload : any) => {
         let map = new Tilemap(payload.name, payload.width, payload.height, payload.size);
-        tileMaps.push(map); 
+        tileMaps.push(map);
         selectedMap = tileMaps.findIndex(el => el == map);
         closeModal();
     };
 </script>
 
 <template>
-    <div class="d-flex flex-column w-100 flex-fill">
-    <tabsMenu class="d-flex flex-row w-100"/>
-    <tabsContent class="col-auto"/>
+    <div id="editor" class="d-flex flex-column w-100">
+        <tabsMenu v-bind:mapsProps="tileMaps" v-bind:selectedMapProps="selectedMap"/>
+        <tabsContent />
     </div>
-    
-    <CreationMapModal v-bind:shown="showCreationModal" @cancel="closeModal" @ok="createTileMap"></CreationMapModal>
+
+    <CreationMapModal v-bind:shown="showCreationModal" @cancel="closeModal()" @ok="createTileMap"></CreationMapModal>
 </template>
 
 <script lang="ts">
@@ -43,3 +43,10 @@
 
     };
 </script>
+
+<style>
+    #editor {
+        flex: 1 1 auto;
+        flex-flow: column;
+    }
+</style>

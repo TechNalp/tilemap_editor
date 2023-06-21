@@ -5,6 +5,7 @@ import {ref} from "vue";
 import pathDefaultTileSet from '@/assets/tileset_default/sheet.png'
 import Tilemap from '@/models/tilemap'
 
+let tileSelect = null;
 let tilsetVide = 'Aucun tileset importé'
 let rougeBack = 0
 let vertBack = 0
@@ -107,6 +108,18 @@ const traitementImage = async (imageUrl) => {
   }
 }
 
+//gère la bordure au clique d'une tuile
+const choixTile = (id) => {
+
+  if(tileSelect != null){
+    var imga = document.getElementById(tileSelect)
+    imga.style.border= 'none'
+  }
+  var img = document.getElementById(id);
+  img.style.border = '2px dashed red';
+  tileSelect=id
+}
+
 //détecte la couleur de fond d'une image
 const detectBackgroundColor = async (imageUrl) => {
   return new Promise((resolve, reject) => {
@@ -152,8 +165,6 @@ const detectBackgroundColor = async (imageUrl) => {
 
 const imageUrl = pathDefaultTileSet
 traitementImage(imageUrl)
-
-console.log(Tilemap.layers)
 
 </script>
 
@@ -207,9 +218,11 @@ console.log(Tilemap.layers)
 
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="defaultTileset" data-bs-parent="#accordionTileSet">
           <div class="d-flex flex-wrap" style="overflow: auto;height: 400px">
+
             <div v-for="(tile, index) in tilesDefault" :key="index" class="col-3 col-md-2 mb-4">
-              <img :src="tile" alt="Tile" width="25" height="25"/>
+              <img :id="'0'+index" :src="tile" width="25" height="25" @click="choixTile('0'+index)"/>
             </div>
+
           </div>
         </div>
       </div>
@@ -231,7 +244,7 @@ console.log(Tilemap.layers)
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
             <div v-for="(tile, index) in tilesSet1" :key="index" class="col-3 col-md-2 mb-4">
-              <img :src="tile" alt="Tile" width="25" height="25"/>
+              <img :id="'1'+index" :src="tile" width="25" height="25" @click="choixTile('1'+index)"/>
             </div>
           </div>
         </div>
@@ -252,7 +265,7 @@ console.log(Tilemap.layers)
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
             <div v-for="(tile, index) in tilesSet2" :key="index" class="col-3 col-md-2 mb-4">
-              <img :src="tile" alt="Tile" width="25" height="25"/>
+              <img :id="'2'+index" :src="tile" width="25" height="25" @click="choixTile('2'+index)"/>
             </div>
           </div>
         </div>
@@ -274,12 +287,12 @@ console.log(Tilemap.layers)
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
             <div v-for="(tile, index) in tilesSet3" :key="index" class="col-3 col-md-2 mb-4">
-              <img :src="tile" alt="Tile" width="25" height="25"/>
+              <img :id="'3'+index" :src="tile" width="25" height="25" @click="choixTile('3'+index)"/>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 
@@ -288,3 +301,7 @@ console.log(Tilemap.layers)
 <script lang="js">
 export default {}
 </script>
+
+<style>
+
+</style>

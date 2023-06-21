@@ -3,49 +3,25 @@
 </script>
 
 <template>
-    <div class="d-flex flex-column h-100">
+    <div class="d-flex flex-column h-100 no-select">
         <navbar/>
         <editor/>
     </div>
-
-  <CreationMapModal v-bind:shown="showCreationModal" @cancel="closeModal()" @ok="createTileMap()"></CreationMapModal>
 </template>
 
 
 <script lang="ts">
 
-  import navbar from '@/components/navbar.vue'
-  import editor from '@/components/editor/editorComponent.vue'
-  import CreationMapModal from '@/components/CreationModal.vue'
-  import { defineComponent } from 'vue';
-  import Tilemap from '@/models/tilemap'
+import navbar from '@/components/navbar.vue'
+import editor from '@/components/editor/editorComponent.vue'
 
-  export default defineComponent({
+export default {
 
-  components: {
-    navbar,
-    editor,
-    CreationMapModal
-  },
-
-  data() {
-    return {
-      showCreationModal : true,
-      tileMap : null as any,
-    }
-  },
-
-  methods : {
-    closeModal() {
-      this.showCreationModal = false;
+    components: {
+        navbar,
+        editor
     },
-
-    createTileMap() {
-      this.tileMap = new Tilemap("new map", 10, 10, 10);
-      this.closeModal();
-    }
-  }
-});
+};
 
 </script>
 
@@ -53,7 +29,7 @@
 <style lang="scss">
 
 html, body {
-    height: 100%;
+  height: 100%;
 }
 
 #app {
@@ -62,7 +38,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-    height: 100%;
+  height: 100%;
 }
 
 nav {
@@ -76,5 +52,9 @@ nav {
       color: #42b983;
     }
   }
+}
+
+.no-select {
+  user-select: none;
 }
 </style>

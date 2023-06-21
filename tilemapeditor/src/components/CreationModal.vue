@@ -38,8 +38,8 @@
                         </div>
 
                         <div style="text-align: right;">
-                            <button type="reset" class="btn btn-secondary btn-sm" @click="cancel()">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-sm" @click="ok()"
+                            <button type="reset" class="btn btn-secondary btn-sm" @click="(e) => cancel(e)">Cancel</button>
+                            <button type="submit" class="btn btn-primary btn-sm" @click="(e) => ok(e)"
                                 style="margin-left: 5px;">OK</button>
                         </div>
 
@@ -51,8 +51,10 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+
+export default defineComponent ({
     name: "CreationMapModal",
 
     props: {
@@ -69,11 +71,12 @@ export default {
 
     methods: {
 
-        cancel() {
+        cancel(e:Event) {
+            console.log(e);
             this.$emit('cancel');
         },
 
-        ok() {
+        ok(e:Event) {
             if (this.name && this.width && this.height) {
                 this.$emit('ok', { name: this.name, width: this.width, height: this.height });
             }
@@ -82,7 +85,7 @@ export default {
 
     }
 
-}
+})
 
 </script>
 

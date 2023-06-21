@@ -30,40 +30,43 @@ window.addEventListener('load', () => {
     <div id="side-menu" class="position-relative d-flex flex-column h-100">
         <div id="side-menu-drag" class="position-absolute bg-dark"></div>
 
-        <div class="mx-3">
+        <div class="h-100 w-100">
+            <div class="mx-3">
 
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
 
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="tileset-tab" data-bs-toggle="tab" data-bs-target="#tileset-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">TileSet</button>
-            </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tileset-tab" data-bs-toggle="tab" data-bs-target="#tileset-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">TileSet</button>
+                    </li>
 
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#layout-tab-pane" type="button" role="tab" aria-controls="layout-tab-pane" aria-selected="false">Layouts</button>
-            </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#layout-tab-pane" type="button" role="tab" aria-controls="layout-tab-pane" aria-selected="false">Layouts</button>
+                    </li>
 
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#properties-tab-pane" type="button" role="tab" aria-controls="properties-tab-pane" aria-selected="false">Properties</button>
-            </li>
-          </ul>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#properties-tab-pane" type="button" role="tab" aria-controls="properties-tab-pane" aria-selected="false">Properties</button>
+                    </li>
+                </ul>
 
-          <div class="tab-content" id="myTabContent">
+                <div class="tab-content" id="myTabContent">
 
-            <div class="tab-pane fade show active" id="tileset-tab-pane" role="tabpanel" aria-labelledby="tilset-tab" tabindex="0">
-              <tileSetTab />
+                    <div class="tab-pane fade show active" id="tileset-tab-pane" role="tabpanel" aria-labelledby="tilset-tab" tabindex="0">
+                        <tileSetTab />
+                    </div>
+
+                    <div class="tab-pane fade" id="layout-tab-pane" role="tabpanel" aria-labelledby="layout-tab" tabindex="0">
+                        <layoutTab />
+                    </div>
+
+                    <div class="tab-pane fade" id="properties-tab-pane" role="tabpanel" aria-labelledby="properties-tab" tabindex="0">
+                        <properties-tab/>
+                    </div>
+
+                </div>
+
             </div>
-
-            <div class="tab-pane fade" id="layout-tab-pane" role="tabpanel" aria-labelledby="layout-tab" tabindex="0">
-              <layoutTab />
-            </div>
-
-            <div class="tab-pane fade" id="properties-tab-pane" role="tabpanel" aria-labelledby="properties-tab" tabindex="0">
-              <properties-tab/>
-            </div>
-
-          </div>
-
         </div>
+
     </div>
 
 </template>
@@ -88,6 +91,8 @@ window.addEventListener('load', () => {
     width: 200px;
     min-width: 320px;
     max-width: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #side-menu-drag {

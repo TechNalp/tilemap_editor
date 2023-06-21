@@ -77,7 +77,7 @@ window.addEventListener('load', () => {
     function move_canvas(e) {
         const dx = m_pos.x - e.x;
         const dy = m_pos.y - e.y;
-        m_pos = { x: e.x, y: e.y };
+        m_pos = {x: e.x, y: e.y};
 
         let new_left = parseInt(getComputedStyle(canvas_container, '').left) - dx;
         let new_top = parseInt(getComputedStyle(canvas_container, '').top) - dy;
@@ -89,7 +89,7 @@ window.addEventListener('load', () => {
 
     canvas_container.addEventListener("mousedown", function (e) {
         if (e.button === 1) {
-            m_pos = { x: e.x, y: e.y };
+            m_pos = {x: e.x, y: e.y};
             document.addEventListener("mousemove", move_canvas, false);
         }
     }, false);
@@ -118,7 +118,7 @@ window.addEventListener('load', () => {
 
 
     let mouse_is_over_grid = false;
-    let mouse_position = { x: 0, y: 0 };
+    let mouse_position = {x: 0, y: 0};
 
     setInterval(() => {
         drawGrid();
@@ -145,7 +145,7 @@ window.addEventListener('load', () => {
     }
 
     editor.onmousemove = (e) => {
-        mouse_position = { x: e.clientX, y: e.clientY };
+        mouse_position = {x: e.clientX, y: e.clientY};
     }
 
 
@@ -153,7 +153,7 @@ window.addEventListener('load', () => {
 </script>
 
 <template>
-    <div id="editor" class="d-flex h-100 flex-fill">
+    <div id="canvas-component" class="d-flex h-100">
         <div id="canvas-holder" class="w-100 h-100 overflow-hidden">
             <div id="canvas-container" class="">
                 <canvas id="canvas" width="500" height="500" class="bg-white"></canvas>
@@ -166,12 +166,15 @@ window.addEventListener('load', () => {
 <script lang="js">
 
 export default {
-    components:{
-    }
+    components: {}
 }
 </script>
 
 <style scoped>
+
+#canvas-component {
+    flex: 1 1 auto;
+}
 
 #canvas-holder {
     position: relative;

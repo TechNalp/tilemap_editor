@@ -17,13 +17,12 @@
     };
 
     const createTileMap = (payload : any) => {
-        let map = new Tilemap(payload.name, payload.width, payload.height, payload.size);
+        let map = new Tilemap(tileMaps.value.length, payload.name, payload.width, payload.height);
         tileMaps.value.push(map);
         selectedMap.value = tileMaps.value.findIndex(el => el == map);
-<<<<<<< HEAD
-=======
-        console.log(selectedMap)
->>>>>>> 8cad3aaae7b0805ed113f091a390ec7e2fd90243
+
+        BusEvent.getInstance().emit("loadProjectCanvas", [map]);
+
         closeModal();
     };
 

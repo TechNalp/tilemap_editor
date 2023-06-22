@@ -4,6 +4,7 @@ import {createCanvas, loadImage} from 'canvas';
 import {ref} from "vue";
 import pathDefaultTileSet from '@/assets/tileset_default/sheet.png'
 import Tilemap from '@/models/tilemap'
+import ProjectSingleton from "@/models/projectSingleton";
 
 let tileSelect = null;
 let tilsetVide = 'Aucun tileset importé'
@@ -106,6 +107,8 @@ const traitementImage = async (imageUrl) => {
       }
     }
   }
+
+    Tilemap.tileSets.value.push(tilesDefault.value);
 }
 
 //gère la bordure au clique d'une tuile
@@ -118,6 +121,9 @@ const choixTile = (id) => {
   var img = document.getElementById(id);
   img.style.border = '2px dashed red';
   tileSelect=id;
+
+  Tilemap.selectedTile.value = id;
+
 }
 
 //détecte la couleur de fond d'une image
@@ -163,8 +169,8 @@ const detectBackgroundColor = async (imageUrl) => {
   });
 }
 
-const imageUrl = pathDefaultTileSet
-traitementImage(imageUrl)
+const imageUrl = pathDefaultTileSet;
+traitementImage(imageUrl);
 
 </script>
 
@@ -220,7 +226,7 @@ traitementImage(imageUrl)
           <div class="d-flex flex-wrap" style="overflow: auto;height: 400px">
 
             <div v-for="(tile, index) in tilesDefault" :key="index" class="col-3 col-md-2 mb-4">
-              <img :id="index" :src="tile" width="25" height="25" @click="choixTile(index)"/>
+              <img :id="index" :src="tile" width="25" height="25" @click="choixTile(index)" class="tile"/>
             </div>
 
           </div>
@@ -244,7 +250,7 @@ traitementImage(imageUrl)
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
             <div v-for="(tile, index) in tilesSet1" :key="index" class="col-3 col-md-2 mb-4">
-              <img :id="'1'+index" :src="tile" width="25" height="25" @click="choixTile('1'+index)"/>
+              <img :id="'1'+index" :src="tile" width="25" height="25" @click="choixTile('1'+index)" class="tile"/>
             </div>
           </div>
         </div>
@@ -265,7 +271,7 @@ traitementImage(imageUrl)
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
             <div v-for="(tile, index) in tilesSet2" :key="index" class="col-3 col-md-2 mb-4">
-              <img :id="'2'+index" :src="tile" width="25" height="25" @click="choixTile('2'+index)"/>
+              <img :id="'2'+index" :src="tile" width="25" height="25" @click="choixTile('2'+index)" class="tile"/>
             </div>
           </div>
         </div>
@@ -287,7 +293,7 @@ traitementImage(imageUrl)
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
             <div v-for="(tile, index) in tilesSet3" :key="index" class="col-3 col-md-2 mb-4">
-              <img :id="'3'+index" :src="tile" width="25" height="25" @click="choixTile('3'+index)"/>
+              <img :id="'3'+index" :src="tile" width="25" height="25" @click="choixTile('3'+index)" class="tile"/>
             </div>
           </div>
         </div>
@@ -303,5 +309,7 @@ export default {}
 </script>
 
 <style>
-
+  .tile {
+    cursor: pointer;
+  }
 </style>

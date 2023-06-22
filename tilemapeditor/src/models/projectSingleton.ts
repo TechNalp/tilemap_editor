@@ -27,4 +27,8 @@ export default class ProjectSingleton {
         this.projectList.value.splice(index, 1);
         this.selectedProject.value = null;
     }
+
+    getSelectedProject() {
+        return this.selectedProject.value ? this.projectList.value[this.selectedProject.value] : null;
+    }
 }

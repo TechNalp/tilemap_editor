@@ -2,23 +2,133 @@
 
 import BusEvent from "@/models/BusEvent";
 import ProjectSingleton from "@/models/projectSingleton";
+import Tilemap from "@/models/tilemap";
 
+
+let gridInterval = null;
+
+let canvas;
+let canvas_ctx;
+
+let grid;
+let grid_ctx;
+
+let canvas_container;
+
+let editor;
+
+let cell_count = {w: 0, h: 0};
+let tile_size = {w: 0, h: 0};
+
+let grid_color = "#ddd";
+
+let zoom;
+let zoom_step;
+let zoom_max;
+let zoom_min;
+
+let canvas_width;
+let canvas_height;
+
+let m_pos;
+
+let getCellSize = () => {
+    return {w: canvas_width / cell_count.w, h: canvas_height / cell_count.h};
+}
+
+let getCellSizeAtZoom = () => {
+    return {w: getCellSize().w * zoom, h: getCellSize().h * zoom};
+}
+
+let drawGrid = () => {
+    grid_ctx.clearRect(0, 0, canvas_width, canvas_height);
+    grid_ctx.beginPath();
+    grid_ctx.strokeStyle = grid_color;
+    grid_ctx.lineWidth = 1;
+    for (let x = 0; x <= canvas_width; x += getCellSize().w) {
+        grid_ctx.moveTo(x, 0);
+        grid_ctx.lineTo(x, canvas_height);
+    }
+    for (let y = 0; y <= canvas_height; y += getCellSize().h) {
+        grid_ctx.moveTo(0, y);
+        grid_ctx.lineTo(canvas_width, y);
+    }
+    grid_ctx.stroke();
+}
+
+let drawLayers = (layers) => {
+    if (layers == null) {
+        return;
+    }
+    canvas_ctx.clearRect(0, 0, canvas_width, canvas_height);
+    for (let i = 0; i < layers.length; i++) {
+        let layer = layers[i].layer;
+        for (let x = 0; x < cell_count.w; x++) {
+            for (let y = 0; y < cell_count.h; y++) {
+
+                let tileId = layer[y][x];
+
+                if (tileId == null) {
+                    continue;
+                } else {
+                    console.log(tileId);
+                }
+
+                let tile = Tilemap.tileSets.value[0][tileId];
+                if (tile != null) {
+                    let img = new Image();
+                    img.src = tile;
+                    canvas_ctx.drawImage(img, x * tile_size.w, y * tile_size.h, tile_size.w, tile_size.h);
+                }
+            }
+        }
+    }
+}
+
+let move_canvas = (e) => {
+    const dx = m_pos.x - e.x;
+    const dy = m_pos.y - e.y;
+    m_pos = {x: e.x, y: e.y};
+
+    let new_left = parseInt(getComputedStyle(canvas_container, '').left) - dx;
+    let new_top = parseInt(getComputedStyle(canvas_container, '').top) - dy;
+
+    canvas_container.style.left = new_left + "px";
+    canvas_container.style.top = new_top + "px";
+
+}
+
+let zoom_canvas = (e) => {
+    if (e.deltaY < 0) {
+        zoom += zoom_step;
+    } else {
+        zoom -= zoom_step;
+    }
+    if (zoom > zoom_max) {
+        zoom = zoom_max;
+    }
+    if (zoom < zoom_min) {
+        zoom = zoom_min;
+    }
+    canvas_container.style.transform = "scale(" + zoom + ")";
+}
 
 const loadProject = (project) => {
-    let canvas = document.getElementById("canvas");
-    let canvas_ctx = canvas.getContext("2d");
+
+    canvas = document.getElementById("canvas");
+    canvas_ctx = canvas.getContext("2d");
     canvas_ctx.imageSmoothingEnabled = false;
 
-    let grid = document.getElementById("grid");
-    let grid_ctx = grid.getContext("2d");
+    grid = document.getElementById("grid");
+    grid_ctx = grid.getContext("2d");
     grid_ctx.imageSmoothingEnabled = false;
 
-    let canvas_container = document.getElementById("canvas-container");
+    canvas_container = document.getElementById("canvas-container");
 
-    let editor = document.getElementById("editor");
+    editor = document.getElementById("editor");
 
-    let cell_count = {w: 10, h: 10};
-    let tile_size = {w: 32, h: 32};
+    cell_count = {w: project.width, h: project.height};
+    tile_size = {w: project.cellSize, h: project.cellSize};
 
     // Change canvas size
     canvas.width = cell_count.w * tile_size.w;
@@ -34,62 +144,20 @@ const loadProject = (project) => {
     canvas_container.style.minHeight = canvas.height + "px";
     canvas_container.style.minWidth = canvas.width + "px";
 
-    let grid_color = "#ddd";
+    grid_color = "#ddd";
 
-    let zoom = 1;
-    let zoom_step = 0.1;
-    let zoom_max = cell_count.w / 2;
-    let zoom_min = 0.1;
+    zoom = 1;
+    zoom_step = 0.1;
+    zoom_max = cell_count.w / 2;
+    zoom_min = 0.1;
 
-    let canvas_width = canvas.width;
-    let canvas_height = canvas.height;
+    canvas_container.style.transform = "scale(" + zoom + ")";
 
-    console.log(canvas_width + "px");
-    console.log(canvas_height + "px");
+    canvas_width = canvas.width;
+    canvas_height = canvas.height;
 
     canvas_container.style.left = (editor.clientWidth - canvas_width) / 2 + "px";
     canvas_container.style.top = (editor.clientHeight - canvas_height) / 2 + "px";
-
-    let getCellSize = () => {
-        return {w: canvas_width / cell_count.w, h: canvas_height / cell_count.h};
-    }
-
-    let getCellSizeAtZoom = () => {
-        return {w: getCellSize().w * zoom, h: getCellSize().h * zoom};
-    }
-
-    let drawGrid = () => {
-        grid_ctx.clearRect(0, 0, canvas_width, canvas_height);
-        grid_ctx.beginPath();
-        grid_ctx.strokeStyle = grid_color;
-        grid_ctx.lineWidth = 1;
-        for (let x = 0; x <= canvas_width; x += getCellSize().w) {
-            grid_ctx.moveTo(x, 0);
-            grid_ctx.lineTo(x, canvas_height);
-        }
-        for (let y = 0; y <= canvas_height; y += getCellSize().h) {
-            grid_ctx.moveTo(0, y);
-            grid_ctx.lineTo(canvas_width, y);
-        }
-        grid_ctx.stroke();
-    }
-
-    drawGrid();
-
-    let m_pos;
-
-    function move_canvas(e) {
-        const dx = m_pos.x - e.x;
-        const dy = m_pos.y - e.y;
-        m_pos = {x: e.x, y: e.y};
-
-        let new_left = parseInt(getComputedStyle(canvas_container, '').left) - dx;
-        let new_top = parseInt(getComputedStyle(canvas_container, '').top) - dy;
-
-        canvas_container.style.left = new_left + "px";
-        canvas_container.style.top = new_top + "px";
-
-    }
 
     canvas_container.addEventListener("mousedown", function (e) {
         if (e.button === 1) {
@@ -102,29 +170,15 @@ const loadProject = (project) => {
         document.removeEventListener("mousemove", move_canvas, false);
     }, false);
 
-    // Zoom canvas
-    let zoom_canvas = (e) => {
-        if (e.deltaY < 0) {
-            zoom += zoom_step;
-        } else {
-            zoom -= zoom_step;
-        }
-        if (zoom > zoom_max) {
-            zoom = zoom_max;
-        }
-        if (zoom < zoom_min) {
-            zoom = zoom_min;
-        }
-        canvas_container.style.transform = "scale(" + zoom + ")";
-    }
-
     canvas_container.addEventListener("wheel", zoom_canvas, false);
 
 
     let mouse_is_over_grid = false;
     let mouse_position = {x: 0, y: 0};
 
-    setInterval(() => {
+    clearInterval(gridInterval);
+
+    gridInterval = setInterval(() => {
         drawGrid();
         if (!mouse_is_over_grid) {
             return;
@@ -138,6 +192,22 @@ const loadProject = (project) => {
 
         grid_ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
         grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+
+        let tile = Tilemap.tileSets.value[0][Tilemap.selectedTile.value];
+
+        if (!tile) {
+            return;
+        }
+
+        let img = new Image();
+        img.src = tile;
+
+        grid_ctx.drawImage(
+            img,
+            x,
+            y,
+        );
+
     }, 50);
 
     grid.onmouseover = (e) => {
@@ -152,13 +222,28 @@ const loadProject = (project) => {
         mouse_position = {x: e.clientX, y: e.clientY};
     }
 
+    canvas_container.onclick = (e) => {
+        console.log('click');
+        let rect = canvas.getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
+
+        x = Math.floor(x / getCellSizeAtZoom().w);
+        y = Math.floor(y / getCellSizeAtZoom().h);
+
+        console.log(x, y);
+
+        project.layers.value[0].layer[y][x] = Tilemap.selectedTile.value;
+        drawLayers(project.layers.value);
+    }
+
+    drawGrid();
 
 };
 
 BusEvent.getInstance().on('loadProjectCanvas', (project) => {
-    console.log('loadProjectCanvas');
-    console.log(project);
-
+    loadProject(project);
+    drawLayers(project.layers.value);
 });
 
 let show = ProjectSingleton.getInstance().selectedProject;

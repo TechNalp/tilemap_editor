@@ -1,11 +1,14 @@
 <script setup lang="ts">
     import ProjectSingleton from '@/models/projectSingleton';
     import Tilemap from '@/models/tilemap';
+    import BusEvent from '@/models/BusEvent';
+
     let maps = ProjectSingleton.getInstance().projectList;
     let selecedMap = ProjectSingleton.getInstance().selectedProject;
 
     const changeTab = (itemMap : Tilemap) => {
         selecedMap.value = maps.value.findIndex(map => map == itemMap);
+        BusEvent.getInstance().emit("loadProjectCanvas", [itemMap]);
     };
 
     const deleteMap = (itemMap : Tilemap) => {

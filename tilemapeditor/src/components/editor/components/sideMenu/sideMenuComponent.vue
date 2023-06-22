@@ -1,4 +1,11 @@
 <script setup lang="js">
+
+import {defineProps} from "vue";
+
+const props = defineProps(['projectId']);
+
+console.log(props);
+
 window.addEventListener('load', () => {
     const BORDER_SIZE = 6;
     const right_panel = document.getElementById("side-menu");

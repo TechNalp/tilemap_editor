@@ -17,4 +17,14 @@ export default class ProjectSingleton {
         }
         return ProjectSingleton.instanceSingleton;
     }
+
+    addProject(tilemap : Tilemap) {
+        this.projectList.value.push(tilemap);
+        this.selectedProject.value = this.projectList.value.length - 1;
+    }
+
+    removeProject(index : number) {
+        this.projectList.value.splice(index, 1);
+        this.selectedProject.value = null;
+    }
 }

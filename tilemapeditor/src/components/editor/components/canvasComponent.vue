@@ -1,5 +1,12 @@
 <script setup lang="js">
 
+import { defineProps } from 'vue';
+
+const props = defineProps(['projectId']);
+
+console.log(props);
+
+
 window.addEventListener('load', () => {
     let canvas = document.getElementById("canvas");
     let canvas_ctx = canvas.getContext("2d");
@@ -162,13 +169,6 @@ window.addEventListener('load', () => {
         </div>
     </div>
 </template>
-
-<script lang="js">
-
-export default {
-    components: {}
-}
-</script>
 
 <style scoped>
 

@@ -1,24 +1,29 @@
+import {Ref, ref} from "vue";
+
 export default class Tilemap {
+    id : number | null = null;
     name : string;
     width : number;
     height : number;
     cellSize : number;
-    layers : any[] = [];
-    selected = false;
+    tileSets : Ref<any[]> = ref([]);
+    selectedTile : Ref<number | null> = ref(null);
+    layers : Ref<any[]> = ref([]);
     constructor(name : string, width : number, height : number, size : number) {
         this.name = name;
         this.width = width;
         this.height = height;
         this.cellSize = size;
-        this.newCalc("layer 1");
+
+        this.newLayer("Layer 1");
     }
 
-    newCalc(name : string) {
-        this.layers.push({id : this.layers.length, name : name, calc : [], visible : true});
+    newLayer(name : string) {
+        this.layers.value.push({id : this.layers.value.length, name : name, layer : [], visible : true});
         for(let h = 0; h < this.height; h++) {
-            this.layers[this.layers.length - 1].calc.push([]);
+            this.layers.value[this.layers.value.length - 1].layer.push([]);
             for(let w = 0; w < this.width; w++) {
-                this.layers[this.layers.length - 1].calc[h].push(0);
+                this.layers.value[this.layers.value.length - 1].layer[h].push(0);
             }
         }
     }

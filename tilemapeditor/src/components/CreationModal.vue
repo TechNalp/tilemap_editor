@@ -2,6 +2,7 @@
     import {ref} from 'vue';
     import {defineProps} from 'vue';
     import {defineEmits} from 'vue';
+    import BusEvent from "@/models/BusEvent";
     const props = defineProps(['shown']);
     const emit = defineEmits(['cancel', 'ok']);
 
@@ -16,6 +17,7 @@
     const ok = () => {
         if (name && width && height) {
             emit('ok', { name: name.value, width: width.value, height: height.value });
+            BusEvent.getInstance().emit('createTab', [name.value]);
         }
     }
 

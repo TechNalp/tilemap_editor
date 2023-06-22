@@ -52,13 +52,13 @@ const traitementImage = async (imageUrl) => {
   context.drawImage(image, 0, 0);
 
   var nextTileSet =-1;
-  if(tilesDefault.value.length == 0){
+  if(tilesDefault.value.length === 0){
     nextTileSet=0
-  }else if(tilesSet1.value.length == 0){
+  }else if(tilesSet1.value.length === 0){
     nextTileSet=1
-  }else if(tilesSet2.value.length == 0){
+  }else if(tilesSet2.value.length === 0){
     nextTileSet=2
-  }else if(tilesSet3.value.length == 0){
+  }else if(tilesSet3.value.length === 0){
     nextTileSet=3
   }
 
@@ -87,7 +87,7 @@ const traitementImage = async (imageUrl) => {
         console.error(error);
       }
 
-      if (couleurCourante[0] != rougeBack && couleurCourante[1] != vertBack && couleurCourante[2] != bleuBack) {
+      if (couleurCourante[0] !== rougeBack && couleurCourante[1] !== vertBack && couleurCourante[2] !== bleuBack) {
 
         switch (nextTileSet) {
           case 0:
@@ -117,7 +117,7 @@ const choixTile = (id) => {
   }
   var img = document.getElementById(id);
   img.style.border = '2px dashed red';
-  tileSelect=id
+  tileSelect=id;
 }
 
 //détecte la couleur de fond d'une image
@@ -220,7 +220,7 @@ traitementImage(imageUrl)
           <div class="d-flex flex-wrap" style="overflow: auto;height: 400px">
 
             <div v-for="(tile, index) in tilesDefault" :key="index" class="col-3 col-md-2 mb-4">
-              <img :id="'0'+index" :src="tile" width="25" height="25" @click="choixTile('0'+index)"/>
+              <img :id="index" :src="tile" width="25" height="25" @click="choixTile(index)"/>
             </div>
 
           </div>
@@ -239,7 +239,7 @@ traitementImage(imageUrl)
         </h2>
 
         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="Tileset1" data-bs-parent="#accordionTileSet">
-          <div v-if="tilesSet1.length == 0">
+          <div v-if="tilesSet1.length === 0">
             <p class="my-2">{{tilsetVide}}</p>
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
@@ -260,7 +260,7 @@ traitementImage(imageUrl)
           </button>
         </h2>
         <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="Tileset2" data-bs-parent="#accordionTileSet">
-          <div v-if="tilesSet2.length == 0">
+          <div v-if="tilesSet2.length === 0">
             <p class="my-2">{{tilsetVide}}</p>
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">
@@ -282,7 +282,7 @@ traitementImage(imageUrl)
           </button>
         </h2>
         <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="Tileset3" data-bs-parent="#accordionTileSet">
-          <div v-if="tilesSet3.length == 0">
+          <div v-if="tilesSet3.length === 0">
             <p class="my-2">{{tilsetVide}}</p>
           </div>
           <div v-else class="d-flex flex-wrap" style="overflow: auto;height: 400px">

@@ -21,7 +21,7 @@
 
 <template>
     <div id="editor" class="d-flex flex-column w-100">
-        <tabsMenu v-bind:mapsProps="tileMaps" v-bind:selectedMapProps="selectedMap"/>
+        <tabsMenu />
         <tabsContent />
     </div>
 

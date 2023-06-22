@@ -15,9 +15,10 @@
     };
 
     const ok = () => {
-        if (name && width && height) {
+        if (name.value && width.value && height.value) {
             emit('ok', { name: name.value, width: width.value, height: height.value });
             BusEvent.getInstance().emit('createTab', [name.value]);
+            name.value = "";
         }
     }
 

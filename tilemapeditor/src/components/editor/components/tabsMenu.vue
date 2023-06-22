@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import ProjectSingleton from '@/models/projectSingleton';
     import Tilemap from '@/models/tilemap';
+
     let maps = ProjectSingleton.getInstance().projectList;
     let selecedMap = ProjectSingleton.getInstance().selectedProject;
 

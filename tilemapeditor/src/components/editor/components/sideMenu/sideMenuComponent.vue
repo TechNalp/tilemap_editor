@@ -1,7 +1,8 @@
 <script setup lang="js">
-import {defineProps} from "vue";
 
-const props = defineProps(['projectId']);
+import ProjectSingleton from "@/models/projectSingleton";
+import {ref, watch} from "vue";
+import BusEvent from "@/models/BusEvent";
 
 window.addEventListener('load', () => {
     const BORDER_SIZE = 6;
@@ -29,10 +30,12 @@ window.addEventListener('load', () => {
     }, false);
 }, false);
 
+let show = ProjectSingleton.getInstance().selectedProject;
+
 </script>
 
 <template>
-    <div id="side-menu" class="position-relative d-flex flex-column h-100">
+    <div id="side-menu" v-bind:class="['position-relative flex-column h-100', (show ? 'd-flex' : 'd-none')]">
         <div id="side-menu-drag" class="position-absolute bg-dark"></div>
 
         <div class="h-100 w-100">

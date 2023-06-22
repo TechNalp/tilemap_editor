@@ -1,13 +1,11 @@
 <script setup lang="ts">
 
-import ProjectSingleton from "@/models/projectSingleton";
-
 </script>
 
 <template>
     <div class="tab-content d-flex flex-row w-100">
-        <canvasComponent projectId="{{ProjectSingleton.getInstance().selectedProject}}"/>
-        <sideMenu projectId="{{ProjectSingleton.getInstance().selectedProject}}"/>
+        <canvasComponent />
+        <sideMenu />
     </div>
 </template>
 

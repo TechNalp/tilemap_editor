@@ -1,13 +1,10 @@
 <script setup lang="js">
 
-import { defineProps } from 'vue';
-
-const props = defineProps(['projectId']);
-
-console.log(props);
+import BusEvent from "@/models/BusEvent";
+import ProjectSingleton from "@/models/projectSingleton";
 
 
-window.addEventListener('load', () => {
+const loadProject = (project) => {
     let canvas = document.getElementById("canvas");
     let canvas_ctx = canvas.getContext("2d");
     canvas_ctx.imageSmoothingEnabled = false;
@@ -156,11 +153,20 @@ window.addEventListener('load', () => {
     }
 
 
-}, false);
+};
+
+BusEvent.getInstance().on('loadProjectCanvas', (project) => {
+    console.log('loadProjectCanvas');
+    console.log(project);
+
+});
+
+let show = ProjectSingleton.getInstance().selectedProject;
+
 </script>
 
 <template>
-    <div id="canvas-component" class="d-flex h-100">
+    <div id="canvas-component" v-bind:class="['h-100', (show !== null ? 'd-flex' : 'd-none')]">
         <div id="canvas-holder" class="w-100 h-100 overflow-hidden">
             <div id="canvas-container" class="">
                 <canvas id="canvas" width="500" height="500" class="bg-white"></canvas>

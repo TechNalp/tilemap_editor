@@ -20,7 +20,10 @@
         let map = new Tilemap(payload.name, payload.width, payload.height, payload.size);
         tileMaps.value.push(map);
         selectedMap.value = tileMaps.value.findIndex(el => el == map);
+<<<<<<< HEAD
+=======
         console.log(selectedMap)
+>>>>>>> 8cad3aaae7b0805ed113f091a390ec7e2fd90243
         closeModal();
     };
 

@@ -20,7 +20,7 @@ export default class BusEvent {
         if(!this.events[event]) {
             this.events[event] = callback;
         } else {
-            console.error("Event already exists");
+            console.error(`Event "${event}" already exists`);
         }
     }
 
@@ -28,7 +28,7 @@ export default class BusEvent {
         if(this.events[event]) {
             this.events[event](...args);
         } else {
-            console.error("Event doesn't exists");
+            console.error(`Event "${event}" doesn't exists`);
         }
     }
 

@@ -17,7 +17,7 @@
     const ok = () => {
         if (name && width && height) {
             emit('ok', { name: name.value, width: width.value, height: height.value });
-            BusEvent.getInstance().emit('createTab', [name.value]);
+            BusEvent.getInstance().emit('show-side-menu', []);
         }
     }
 

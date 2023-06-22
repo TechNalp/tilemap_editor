@@ -4,8 +4,8 @@
     import { ref } from 'vue';
 
     let showCreationModal = ref(true);
-    let tileMaps = ProjectSingleton.getInstance().projectList.value;
-    let selectedMap = ProjectSingleton.getInstance().selectedProject.value;
+    let tileMaps = ProjectSingleton.getInstance().projectList;
+    let selectedMap = ProjectSingleton.getInstance().selectedProject;
 
     const closeModal = () => {
         showCreationModal.value = false;
@@ -13,8 +13,8 @@
 
     const createTileMap = (payload : any) => {
         let map = new Tilemap(payload.name, payload.width, payload.height, payload.size);
-        tileMaps.push(map);
-        selectedMap = tileMaps.findIndex(el => el == map);
+        tileMaps.value.push(map);
+        selectedMap.value = tileMaps.value.findIndex(el => el == map);
         closeModal();
     };
 </script>

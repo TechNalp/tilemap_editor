@@ -1,11 +1,16 @@
 <script setup lang="ts">
     import Tilemap from '@/models/tilemap';
     import ProjectSingleton from '@/models/projectSingleton';
+    import BusEvent from '@/models/BusEvent';
     import { ref } from 'vue';
 
     let showCreationModal = ref(true);
     let tileMaps = ProjectSingleton.getInstance().projectList.value;
     let selectedMap = ProjectSingleton.getInstance().selectedProject.value;
+
+    const openModal = () => {
+        showCreationModal.value = true;
+    }
 
     const closeModal = () => {
         showCreationModal.value = false;
@@ -17,6 +22,8 @@
         selectedMap = tileMaps.findIndex(el => el == map);
         closeModal();
     };
+
+    BusEvent.getInstance().on("openCreateModal", openModal);
 </script>
 
 <template>

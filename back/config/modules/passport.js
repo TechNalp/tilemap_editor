@@ -5,7 +5,7 @@ const LocalStrategy = require('passport-local').Strategy
 passport.use(new LocalStrategy(
     {usernameField: 'username', passwordField: 'password'},
     (username, password, done)=>{
-        const password_hash = utils.hash(passowrd+security.salt)
+        const password_hash = utils.hash(password+security.salt)
        mariadb.getConnection().then(conn=>{
             // Requête pour récupérer l'utilisateur correspondant au nom d'utilisateur fourni
             const query = "SELECT id FROM login_log WHERE username='"+username+"'AND password = '"+password_hash+"'";
@@ -16,11 +16,7 @@ passport.use(new LocalStrategy(
                     return done(null, false, { message: 'Nom d\'utilisateur incorrect' });
                 }
 
-                const user = rows[0];
-            if (user.password !== password) {
-            // Le mot de passe est incorrect
-            return done(null, false, { message: 'Mot de passe incorrect' });
-            }
+                const user = rows[0];w
 
             // L'authentification est réussie, retourne l'utilisateur
             return done(null, user);

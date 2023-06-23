@@ -9,5 +9,5 @@ module.exports = session({
     secret: config['session-secret'],
     resave: false,
     saveUninitialized: false,
-    store: new SQLiteStore({db: 'sessions',dir:'./db_store',table: 'sessions'})
+    store: new SQLiteStore({db: 'sessions',dir:'./back/db_store',table: 'sessions'})
 })

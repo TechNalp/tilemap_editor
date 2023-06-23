@@ -10,7 +10,7 @@ const security = require('./config/security.json')
 const mariadb = require('./config/modules/db')
 
 const app = express()
-const port = 3000
+const port = 80
 
 
 

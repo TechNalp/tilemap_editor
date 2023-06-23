@@ -41,11 +41,6 @@ const newProperties = () => {
           </div>
         </div>
 
-        <div class="form-floating my-3 mx-2">
-          <input type="text" class="form-control" id="floatingLayers" placeholder="name" :value="maps.at(selectedMap).layers.length" readonly>
-          <label for="floatingLayers">Layers number</label>
-        </div>
-
         <button type="button" class="btn btn-primary" @click="newProperties">Save</button>
       </form>
     </div>

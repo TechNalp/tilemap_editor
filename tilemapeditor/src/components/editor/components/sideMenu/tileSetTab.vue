@@ -210,8 +210,10 @@ traitementImage(imageUrl);
   <div>
     <div class="row mb-2">
       <div class="col mx-0">
-        <input type="color" id="back" name="backcolor" :value="backgroundColor">
-        <label for="head">Background color</label>
+        <label class="text-secondary" for="head">Background color</label>
+      </div>
+      <div class="col mx-0">
+      <input type="color" id="back" name="backcolor" :value="backgroundColor">
       </div>
     </div>
 

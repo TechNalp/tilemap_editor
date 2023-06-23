@@ -4,7 +4,6 @@ import ProjectSingleton from "@/models/projectSingleton";
 
 let maps = ref(ProjectSingleton.getInstance().projectList);
 let selectedMap = ref(ProjectSingleton.getInstance().selectedProject);
-console.log(maps.value.at(selectedMap.value))
 
 const newProperties = () => {
   let inputName = document.getElementById("floatingName").value;

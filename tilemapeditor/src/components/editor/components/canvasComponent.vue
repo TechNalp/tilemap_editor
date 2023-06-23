@@ -3,6 +3,7 @@
 import BusEvent from "@/models/BusEvent";
 import ProjectSingleton from "@/models/projectSingleton";
 import Tilemap from "@/models/tilemap";
+import {ref} from "vue";
 
 
 let gridInterval = null;
@@ -14,6 +15,9 @@ let grid;
 let grid_ctx;
 
 let draw_grid = true;
+
+let selected_cell_x = ref(-1);
+let selected_cell_y = ref(-1);
 
 let canvas_container;
 
@@ -202,6 +206,9 @@ const loadProject = (project) => {
             x = Math.floor(x / getCellSizeAtZoom().w) * getCellSize().w;
             y = Math.floor(y / getCellSizeAtZoom().h) * getCellSize().h;
 
+            selected_cell_x.value = Math.floor(x / getCellSizeAtZoom().w);
+            selected_cell_y.value = Math.floor(y / getCellSizeAtZoom().h);
+
             grid_ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
             grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
 
@@ -228,6 +235,9 @@ const loadProject = (project) => {
                     }
                 }
             }
+        } else {
+            selected_cell_x.value = -1;
+            selected_cell_y.value = -1;
         }
 
         if (mouse_is_clicked) {
@@ -297,10 +307,17 @@ let show = ProjectSingleton.getInstance().selectedProject;
 
 <template>
     <div id="canvas-component" v-bind:class="['h-100', (show !== null ? 'd-flex' : 'd-none')]">
-        <div id="canvas-buttons" class="btn-group position-absolute" role="group" aria-label="">
-            <input type="checkbox" class="btn-check" id="grid-show" v-bind:checked="draw_grid" autocomplete="off" @click="draw_grid=!draw_grid" >
-            <label class="btn btn-outline-info" for="grid-show">Grid</label>
+        <div id="canvas-tools" class="d-flex flex-row-reverse w-100">
+            <div class="btn-group" role="group" aria-label="">
+                <input type="checkbox" class="btn-check" id="grid-show" v-bind:checked="draw_grid" autocomplete="off" @click="draw_grid=!draw_grid" >
+                <label class="btn btn-outline-info" for="grid-show">Grid</label>
+            </div>
+            <div class="me-3 text-info mt-auto mb-auto">
+                X : {{ selected_cell_x === -1 ? '?' : selected_cell_x }} /
+                Y : {{ selected_cell_y === -1 ? '?' : selected_cell_y }}
+            </div>
         </div>
+
         <div id="canvas-holder" class="w-100 h-100 overflow-hidden">
             <div id="canvas-container" class="">
                 <canvas id="canvas" width="500" height="500" class="bg-white"></canvas>
@@ -350,9 +367,10 @@ let show = ProjectSingleton.getInstance().selectedProject;
     top: 0;
 }
 
-#canvas-buttons {
-    top: 12px;
-    right: 12px;
+#canvas-tools {
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 100;
 }
 </style>

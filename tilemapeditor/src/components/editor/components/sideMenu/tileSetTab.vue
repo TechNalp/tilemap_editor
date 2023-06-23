@@ -8,9 +8,10 @@ import ProjectSingleton from "@/models/projectSingleton";
 
 let tileSelect = null;
 let tilsetVide = 'Aucun tileset importé'
-let rougeBack = 0
-let vertBack = 0
-let bleuBack = 0
+let backgroundColor= ref("#000000")
+let rougeBack = ref(0)
+let vertBack = ref(0)
+let bleuBack = ref(0)
 let tilesDefault = ref([])
 let tilesSet1=ref([])
 let tilesSet2=ref([])
@@ -20,11 +21,26 @@ const fileInput = ref(null);
 //appelé au clique du bouton import
 const cliqueImport = () => {
 
+  var selectColor = document.getElementById("back").value
+  backgroundColor.value=selectColor
+  hexToRgb(selectColor)
+
   const file = fileInput.value.files[0];
   if (file) {
     var imageUrl = URL.createObjectURL(file);
     traitementImage(imageUrl)
   }
+}
+
+// Convertir une couleur hexadécimale en RGB
+const hexToRgb = (hex) => {
+  // Enlever le # du début si présent
+  hex = hex.replace("#", "");
+
+  // Extraire les composantes RGB
+  rougeBack = parseInt(hex.substring(0, 2), 16);
+  vertBack = parseInt(hex.substring(2, 4), 16);
+  bleuBack = parseInt(hex.substring(4, 6), 16);
 }
 
 const supprimerTileSet = (indice) =>{
@@ -83,13 +99,23 @@ const traitementImage = async (imageUrl) => {
       const tileDataURL = tileCanvas.toDataURL();
 
       try {
+        var rouge = rougeBack.value;
+        var vert = vertBack.value ;
+        var bleu = bleuBack.value;
+
+        if(rougeBack.value == null)
+          rouge = rougeBack
+        if(vertBack.value == null)
+          vert = vertBack
+        if(bleuBack.value == null)
+          bleu = bleuBack
+
         var couleurCourante = await detectBackgroundColor(tileDataURL);
       } catch (error) {
         console.error(error);
       }
 
-      if (couleurCourante[0] !== rougeBack && couleurCourante[1] !== vertBack && couleurCourante[2] !== bleuBack) {
-
+      if (couleurCourante[0] != rouge && couleurCourante[1] != vert && couleurCourante[2] != bleu) {
         switch (nextTileSet) {
           case 0:
             tilesDefault.value.push(tileDataURL)
@@ -107,7 +133,6 @@ const traitementImage = async (imageUrl) => {
       }
     }
   }
-
     Tilemap.tileSets.value.push(tilesDefault.value);
 }
 
@@ -172,8 +197,8 @@ const detectBackgroundColor = async (imageUrl) => {
 const imageUrl = pathDefaultTileSet;
 traitementImage(imageUrl);
 
-</script>
 
+</script>
 <template>
 
   <div>
@@ -185,22 +210,8 @@ traitementImage(imageUrl);
   <div>
     <div class="row mb-2">
       <div class="col mx-0">
-        <div class="form-floating mb-1">
-          <input type="number" class="form-control" placeholder="R" aria-label="R" min="0" max="255" v-model="rougeBack">
-          <label for="floatingInput">Red</label>
-        </div>
-      </div>
-      <div class="col mx-0">
-        <div class="form-floating mb-1">
-          <input type="number" class="form-control" placeholder="G" aria-label="G" min="0" max="255" v-model="vertBack">
-          <label for="floatingInput">Green</label>
-        </div>
-      </div>
-      <div class="col mx-0">
-        <div class="form-floating mb-1">
-          <input type="number" class="form-control" placeholder="B" aria-label="B" min="0" max="255" v-model="bleuBack">
-          <label for="floatingInput">Blue</label>
-        </div>
+        <input type="color" id="back" name="backcolor" :value="backgroundColor">
+        <label for="head">Background color</label>
       </div>
     </div>
 

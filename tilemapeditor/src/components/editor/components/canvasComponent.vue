@@ -120,6 +120,7 @@ let zoom_canvas = (e) => {
     if (zoom < zoom_min) {
         zoom = zoom_min;
     }
+    e.preventDefault()
     canvas_container.style.transform = "scale(" + zoom + ")";
 }
 

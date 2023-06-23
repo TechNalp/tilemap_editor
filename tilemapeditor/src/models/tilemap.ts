@@ -32,5 +32,32 @@ export default class Tilemap {
         }
         this.selectedLayer.value = this.layers.value.length - 1;
     }
+
+    export() {
+        let json = {
+            'name' : this.name,
+            'width' : this.width,
+            'height' : this.height,
+            'cellSize' : this.cellSize,
+            'layers' : this.layers
+        }
+
+        return JSON.stringify(json);
+    }
+
+    importFromJSON(json : string) {
+        const parsedJSON = JSON.parse(json);
+    
+        try {
+            this.name = parsedJSON.name;
+            this.width = parsedJSON.width;
+            this.height = parsedJSON.height;
+            this.cellSize = parsedJSON.cellSize;
+            this.layers.value = parsedJSON.layers;
+        } catch(e) {
+            console.log("import impossible");
+        }
+        
+      }
 }
 

@@ -1,18 +1,44 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+    <div class="d-flex flex-column h-100 no-select">
+        <navbar/>
+        <editor/>
+    </div>
 </template>
 
+
+<script lang="ts">
+
+import navbar from '@/components/navbar.vue'
+import editor from '@/components/editor/editorComponent.vue'
+
+export default {
+
+    components: {
+        navbar,
+        editor
+    },
+};
+
+</script>
+
+
 <style lang="scss">
+
+html, body {
+  height: 100%;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 
 nav {
@@ -26,5 +52,9 @@ nav {
       color: #42b983;
     }
   }
+}
+
+.no-select {
+  user-select: none;
 }
 </style>

@@ -8,9 +8,17 @@ let layers = ref([]);
 let selectedLayer = ref(null);
 
 let loadProject = (_project) => {
+
+    if (_project === null) {
+        console.log("Project is null");
+        return;
+    }
+
     project = _project;
     layers.value = _project.layers.value;
-    selectedLayer.value = _project.layers.value[0].id;
+    if (_project.layers.value.length > 0) {
+        selectedLayer.value = _project.layers.value[0].id;
+    }
 }
 
 let selectLayer = (id) => {

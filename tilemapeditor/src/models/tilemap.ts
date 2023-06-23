@@ -6,14 +6,15 @@ export default class Tilemap {
     width : number;
     height : number;
     cellSize : number;
-    tileSets : Ref<any[]> = ref([]);
-    selectedTile : Ref<number | null> = ref(null);
+    static tileSets : Ref<any[]> = ref([]);
+    static selectedTile : Ref<number | null> = ref(null);
     layers : Ref<any[]> = ref([]);
-    constructor(name : string, width : number, height : number, size : number) {
+    constructor(id : number, name : string, width : number, height : number) {
+        this.id = id;
         this.name = name;
         this.width = width;
         this.height = height;
-        this.cellSize = size;
+        this.cellSize = 16;
 
         this.newLayer("Layer 1");
     }
@@ -23,7 +24,7 @@ export default class Tilemap {
         for(let h = 0; h < this.height; h++) {
             this.layers.value[this.layers.value.length - 1].layer.push([]);
             for(let w = 0; w < this.width; w++) {
-                this.layers.value[this.layers.value.length - 1].layer[h].push(0);
+                this.layers.value[this.layers.value.length - 1].layer[h].push(null);
             }
         }
     }

@@ -35,7 +35,8 @@ let show = ProjectSingleton.getInstance().selectedProject;
 </script>
 
 <template>
-    <div id="side-menu" v-bind:class="['position-relative flex-column h-100', (show ? 'd-flex' : 'd-none')]">
+    {{show}}
+    <div id="side-menu" v-bind:class="['position-relative flex-column h-100', (show !== null ? 'd-flex' : 'd-none')]">
         <div id="side-menu-drag" class="position-absolute bg-dark"></div>
 
         <div class="h-100 w-100">

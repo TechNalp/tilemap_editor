@@ -17,8 +17,6 @@
     const ok = () => {
         if (name.value && width.value && height.value) {
             emit('ok', { name: name.value, width: width.value, height: height.value });
-            BusEvent.getInstance().emit('show-side-menu', []);
-            BusEvent.getInstance().emit('createTab', [name.value]);
             name.value = "";
         }
     }
@@ -35,7 +33,6 @@
                 </div>
                 <div class="card-body">
 
-                    <form action="">
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text text-white" id="inputGroup-sizing-sm">Name</span>
@@ -66,11 +63,9 @@
 
                         <div style="text-align: right;">
                             <button type="reset" class="btn btn-secondary btn-sm" @click="cancel()">Cancel</button>
-                            <button type="submit" class="btn btn-primary btn-sm" @click="ok()"
+                            <button class="btn btn-primary btn-sm" @click="ok()"
                                 style="margin-left: 5px;">OK</button>
                         </div>
-
-                    </form>
 
                 </div>
             </div>

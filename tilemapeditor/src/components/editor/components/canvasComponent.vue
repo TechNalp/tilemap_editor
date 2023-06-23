@@ -13,6 +13,8 @@ let canvas_ctx;
 let grid;
 let grid_ctx;
 
+let draw_grid = true;
+
 let canvas_container;
 
 let editor;
@@ -41,7 +43,13 @@ let getCellSizeAtZoom = () => {
 }
 
 let drawGrid = () => {
+
     grid_ctx.clearRect(0, 0, canvas_width, canvas_height);
+
+    if (!draw_grid) {
+        return;
+    }
+
     grid_ctx.beginPath();
     grid_ctx.strokeStyle = grid_color;
     grid_ctx.lineWidth = 1;
@@ -112,6 +120,11 @@ let zoom_canvas = (e) => {
 }
 
 const loadProject = (project) => {
+
+    if (project == null) {
+        console.log("Project is null");
+        return;
+    }
 
     canvas = document.getElementById("canvas");
     canvas_ctx = canvas.getContext("2d");
@@ -193,20 +206,26 @@ const loadProject = (project) => {
             grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
 
             if (mouse_button === 2) {
-                grid_ctx.fillStyle = "rgba(255, 0, 0, 0.1)"
+                grid_ctx.fillStyle = "rgba(255, 0, 0, 0.2)"
                 grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
             } else {
-                let tile = Tilemap.tileSets.value[0][Tilemap.selectedTile.value];
 
-                if (tile) {
-                    let img = new Image();
-                    img.src = tile;
+                let tileId = Tilemap.selectedTile.value;
 
-                    grid_ctx.drawImage(
-                        img,
-                        x,
-                        y,
-                    );
+                let tile = null;
+
+                if (tileId !== null) {
+                    tile = Tilemap.tileSets.value[0][tileId];
+                    if (tile) {
+                        let img = new Image();
+                        img.src = tile;
+
+                        grid_ctx.drawImage(
+                            img,
+                            x,
+                            y,
+                        );
+                    }
                 }
             }
         }
@@ -221,6 +240,11 @@ const loadProject = (project) => {
             y = Math.floor(y / getCellSizeAtZoom().h);
 
             let layerId = project.selectedLayer.value;
+
+            // return if out of bounds
+            if (x < 0 || x >= project.width || y < 0 || y >= project.height) {
+                return;
+            }
 
             if (mouse_button === 0) {
                 project.layers.value[layerId].layer[y][x] = Tilemap.selectedTile.value;
@@ -273,6 +297,10 @@ let show = ProjectSingleton.getInstance().selectedProject;
 
 <template>
     <div id="canvas-component" v-bind:class="['h-100', (show !== null ? 'd-flex' : 'd-none')]">
+        <div id="canvas-buttons" class="btn-group position-absolute" role="group" aria-label="">
+            <input type="checkbox" class="btn-check" id="grid-show" v-bind:checked="draw_grid" autocomplete="off" @click="draw_grid=!draw_grid" >
+            <label class="btn btn-outline-info" for="grid-show">Grid</label>
+        </div>
         <div id="canvas-holder" class="w-100 h-100 overflow-hidden">
             <div id="canvas-container" class="">
                 <canvas id="canvas" width="500" height="500" class="bg-white"></canvas>
@@ -285,6 +313,7 @@ let show = ProjectSingleton.getInstance().selectedProject;
 <style scoped>
 
 #canvas-component {
+    position: relative;
     flex: 1 1 auto;
 }
 
@@ -319,5 +348,11 @@ let show = ProjectSingleton.getInstance().selectedProject;
     height: 100%;
     left: 0;
     top: 0;
+}
+
+#canvas-buttons {
+    top: 12px;
+    right: 12px;
+    z-index: 100;
 }
 </style>

@@ -4,6 +4,7 @@ import ProjectSingleton from "@/models/projectSingleton";
 
 let maps = ref(ProjectSingleton.getInstance().projectList);
 let selectedMap = ref(ProjectSingleton.getInstance().selectedProject);
+console.log(maps.value.at(selectedMap.value))
 
 const newProperties = () => {
   let inputName = document.getElementById("floatingName").value;
@@ -48,11 +49,6 @@ const newProperties = () => {
         <div class="form-floating my-3 mx-2">
           <input type="text" class="form-control" id="floatingLayers" placeholder="name" :value="maps.at(selectedMap).layers.length" readonly>
           <label for="floatingLayers">Layers number</label>
-        </div>
-
-        <div class="form-floating my-3 mx-2">
-          <input type="text" class="form-control" id="floatingTileset" placeholder="name" :value="maps.at(selectedMap).tileSets.length" readonly>
-          <label for="floatingTileset">Tileset number</label>
         </div>
 
         <button type="button" class="btn btn-primary" @click="newProperties">Save</button>

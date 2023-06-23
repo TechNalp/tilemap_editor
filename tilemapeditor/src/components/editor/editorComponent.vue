@@ -23,6 +23,7 @@
 
         BusEvent.getInstance().emit("loadProjectCanvas", [map]);
 
+        console.log(selectedMap)
         closeModal();
     };
 

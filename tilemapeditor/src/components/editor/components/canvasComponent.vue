@@ -120,6 +120,7 @@ let zoom_canvas = (e) => {
     if (zoom < zoom_min) {
         zoom = zoom_min;
     }
+    e.preventDefault()
     canvas_container.style.transform = "scale(" + zoom + ")";
 }
 
@@ -371,6 +372,7 @@ let show = ProjectSingleton.getInstance().selectedProject;
     position: absolute;
     top: 0;
     left: 0;
+    padding: 12px;
     z-index: 100;
 }
 </style>

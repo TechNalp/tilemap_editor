@@ -174,39 +174,63 @@ const loadProject = (project) => {
 
 
     let mouse_is_over_grid = false;
+    let mouse_is_clicked = false;
+    let mouse_button = null;
     let mouse_position = {x: 0, y: 0};
 
     clearInterval(gridInterval);
 
     gridInterval = setInterval(() => {
-        drawGrid();
-        if (!mouse_is_over_grid) {
-            return;
+        if (mouse_is_over_grid) {
+            drawGrid();
+            let rect = grid.getBoundingClientRect();
+            let x = mouse_position.x - rect.left;
+            let y = mouse_position.y - rect.top;
+
+            x = Math.floor(x / getCellSizeAtZoom().w) * getCellSize().w;
+            y = Math.floor(y / getCellSizeAtZoom().h) * getCellSize().h;
+
+            grid_ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
+            grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+
+            if (mouse_button === 2) {
+                grid_ctx.fillStyle = "rgba(255, 0, 0, 0.1)"
+                grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+            } else {
+                let tile = Tilemap.tileSets.value[0][Tilemap.selectedTile.value];
+
+                if (tile) {
+                    let img = new Image();
+                    img.src = tile;
+
+                    grid_ctx.drawImage(
+                        img,
+                        x,
+                        y,
+                    );
+                }
+            }
+
+
         }
-        let rect = grid.getBoundingClientRect();
-        let x = mouse_position.x - rect.left;
-        let y = mouse_position.y - rect.top;
 
-        x = Math.floor(x / getCellSizeAtZoom().w) * getCellSize().w;
-        y = Math.floor(y / getCellSizeAtZoom().h) * getCellSize().h;
+        if (mouse_is_clicked) {
 
-        grid_ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
-        grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+            let rect = canvas.getBoundingClientRect();
+            let x = mouse_position.x - rect.left;
+            let y = mouse_position.y - rect.top;
 
-        let tile = Tilemap.tileSets.value[0][Tilemap.selectedTile.value];
+            x = Math.floor(x / getCellSizeAtZoom().w);
+            y = Math.floor(y / getCellSizeAtZoom().h);
 
-        if (!tile) {
-            return;
+            if (mouse_button === 0) {
+                project.layers.value[0].layer[y][x] = Tilemap.selectedTile.value;
+                drawLayers(project.layers.value);
+            } else if (mouse_button === 2) {
+                project.layers.value[0].layer[y][x] = null;
+                drawLayers(project.layers.value);
+            }
         }
-
-        let img = new Image();
-        img.src = tile;
-
-        grid_ctx.drawImage(
-            img,
-            x,
-            y,
-        );
 
     }, 50);
 
@@ -222,23 +246,21 @@ const loadProject = (project) => {
         mouse_position = {x: e.clientX, y: e.clientY};
     }
 
-    canvas_container.onclick = (e) => {
-        console.log('click');
-        let rect = canvas.getBoundingClientRect();
-        let x = e.clientX - rect.left;
-        let y = e.clientY - rect.top;
+    canvas_container.onmousedown = (e) => {
+        mouse_button = e.button;
+        mouse_is_clicked = true;
+    }
 
-        x = Math.floor(x / getCellSizeAtZoom().w);
-        y = Math.floor(y / getCellSizeAtZoom().h);
+    canvas_container.onmouseup = (e) => {
+        mouse_button = null;
+        mouse_is_clicked = false;
+    }
 
-        console.log(x, y);
-
-        project.layers.value[0].layer[y][x] = Tilemap.selectedTile.value;
-        drawLayers(project.layers.value);
+    canvas_container.oncontextmenu = (e) => {
+        e.preventDefault();
     }
 
     drawGrid();
-
 };
 
 BusEvent.getInstance().on('loadProjectCanvas', (project) => {
@@ -279,6 +301,7 @@ let show = ProjectSingleton.getInstance().selectedProject;
     position: relative;
     width: 500px;
     height: 500px;
+    cursor: pointer;
 }
 
 #canvas {

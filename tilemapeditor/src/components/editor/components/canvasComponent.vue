@@ -371,6 +371,7 @@ let show = ProjectSingleton.getInstance().selectedProject;
     position: absolute;
     top: 0;
     left: 0;
+    padding: 12px;
     z-index: 100;
 }
 </style>

@@ -22,8 +22,8 @@
         selectedMap.value = tileMaps.value.findIndex(el => el == map);
 
         BusEvent.getInstance().emit("loadProjectCanvas", [map]);
+        BusEvent.getInstance().emit("loadProjectLayers", [map]);
 
-        console.log(selectedMap)
         closeModal();
     };
 

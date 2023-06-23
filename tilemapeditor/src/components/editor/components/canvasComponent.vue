@@ -70,8 +70,6 @@ let drawLayers = (layers) => {
 
                 if (tileId == null) {
                     continue;
-                } else {
-                    console.log(tileId);
                 }
 
                 let tile = Tilemap.tileSets.value[0][tileId];
@@ -181,8 +179,9 @@ const loadProject = (project) => {
     clearInterval(gridInterval);
 
     gridInterval = setInterval(() => {
+
+        drawGrid();
         if (mouse_is_over_grid) {
-            drawGrid();
             let rect = grid.getBoundingClientRect();
             let x = mouse_position.x - rect.left;
             let y = mouse_position.y - rect.top;
@@ -210,8 +209,6 @@ const loadProject = (project) => {
                     );
                 }
             }
-
-
         }
 
         if (mouse_is_clicked) {
@@ -223,11 +220,13 @@ const loadProject = (project) => {
             x = Math.floor(x / getCellSizeAtZoom().w);
             y = Math.floor(y / getCellSizeAtZoom().h);
 
+            let layerId = project.selectedLayer.value;
+
             if (mouse_button === 0) {
-                project.layers.value[0].layer[y][x] = Tilemap.selectedTile.value;
+                project.layers.value[layerId].layer[y][x] = Tilemap.selectedTile.value;
                 drawLayers(project.layers.value);
             } else if (mouse_button === 2) {
-                project.layers.value[0].layer[y][x] = null;
+                project.layers.value[layerId].layer[y][x] = null;
                 drawLayers(project.layers.value);
             }
         }
@@ -260,12 +259,12 @@ const loadProject = (project) => {
         e.preventDefault();
     }
 
+    drawLayers(project.layers.value);
     drawGrid();
 };
 
 BusEvent.getInstance().on('loadProjectCanvas', (project) => {
     loadProject(project);
-    drawLayers(project.layers.value);
 });
 
 let show = ProjectSingleton.getInstance().selectedProject;

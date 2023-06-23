@@ -9,6 +9,7 @@
     const changeTab = (itemMap : Tilemap) => {
         selecedMap.value = maps.value.findIndex(map => map == itemMap);
         BusEvent.getInstance().emit("loadProjectCanvas", [itemMap]);
+        BusEvent.getInstance().emit("loadProjectLayers", [itemMap]);
     };
 
     const deleteMap = (itemMap : Tilemap) => {

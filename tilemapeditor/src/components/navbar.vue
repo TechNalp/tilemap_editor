@@ -45,20 +45,17 @@ const exportJSON = () => {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid mx-5">
       <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav me-auto">
           <li class="nav-item" @mouseover="showFichierMenu()" @mouseleave="closeFichierMenu()">
-            <a class="nav-link"
-              >Fichier
-              <span class="visually-hidden">(current)</span>
-            </a>
-            <div v-if="showFileMenu">
-              <a @click="openCreateModal" >New Map</a>
-              <br>
-              <a @click="exportJSON">Export</a>
-            </div>
+              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
+                 aria-expanded="false">Fichiers</a>
+              <div class="dropdown-menu">
+                  <a @click="openCreateModal" class="dropdown-item">New Map</a>
+                  <a @click="exportJSON" class="dropdown-item">Export</a>
+              </div>
           </li>
           <li class="nav-item">
             <a class="nav-link">Edition</a>

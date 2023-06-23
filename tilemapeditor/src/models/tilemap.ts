@@ -9,6 +9,7 @@ export default class Tilemap {
     static tileSets : Ref<any[]> = ref([]);
     static selectedTile : Ref<number | null> = ref(null);
     layers : Ref<any[]> = ref([]);
+    selectedLayer : Ref<number | null> = ref(null);
     constructor(id : number, name : string, width : number, height : number) {
         this.id = id;
         this.name = name;
@@ -17,6 +18,8 @@ export default class Tilemap {
         this.cellSize = 16;
 
         this.newLayer("Layer 1");
+        this.newLayer("Layer 2");
+        this.selectedLayer.value = 0;
     }
 
     newLayer(name : string) {
@@ -27,6 +30,7 @@ export default class Tilemap {
                 this.layers.value[this.layers.value.length - 1].layer[h].push(null);
             }
         }
+        this.selectedLayer.value = this.layers.value.length - 1;
     }
 
     export() {

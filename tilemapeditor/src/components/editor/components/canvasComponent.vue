@@ -3,6 +3,7 @@
 import BusEvent from "@/models/BusEvent";
 import ProjectSingleton from "@/models/projectSingleton";
 import Tilemap from "@/models/tilemap";
+import {ref} from "vue";
 
 
 let gridInterval = null;
@@ -12,6 +13,11 @@ let canvas_ctx;
 
 let grid;
 let grid_ctx;
+
+let draw_grid = true;
+
+let selected_cell_x = ref(-1);
+let selected_cell_y = ref(-1);
 
 let canvas_container;
 
@@ -41,7 +47,13 @@ let getCellSizeAtZoom = () => {
 }
 
 let drawGrid = () => {
+
     grid_ctx.clearRect(0, 0, canvas_width, canvas_height);
+
+    if (!draw_grid) {
+        return;
+    }
+
     grid_ctx.beginPath();
     grid_ctx.strokeStyle = grid_color;
     grid_ctx.lineWidth = 1;
@@ -70,8 +82,6 @@ let drawLayers = (layers) => {
 
                 if (tileId == null) {
                     continue;
-                } else {
-                    console.log(tileId);
                 }
 
                 let tile = Tilemap.tileSets.value[0][tileId];
@@ -114,6 +124,11 @@ let zoom_canvas = (e) => {
 }
 
 const loadProject = (project) => {
+
+    if (project == null) {
+        console.log("Project is null");
+        return;
+    }
 
     canvas = document.getElementById("canvas");
     canvas_ctx = canvas.getContext("2d");
@@ -174,39 +189,81 @@ const loadProject = (project) => {
 
 
     let mouse_is_over_grid = false;
+    let mouse_is_clicked = false;
+    let mouse_button = null;
     let mouse_position = {x: 0, y: 0};
 
     clearInterval(gridInterval);
 
     gridInterval = setInterval(() => {
+
         drawGrid();
-        if (!mouse_is_over_grid) {
-            return;
+        if (mouse_is_over_grid) {
+            let rect = grid.getBoundingClientRect();
+            let x = mouse_position.x - rect.left;
+            let y = mouse_position.y - rect.top;
+
+            x = Math.floor(x / getCellSizeAtZoom().w) * getCellSize().w;
+            y = Math.floor(y / getCellSizeAtZoom().h) * getCellSize().h;
+
+            selected_cell_x.value = Math.floor(x / getCellSizeAtZoom().w);
+            selected_cell_y.value = Math.floor(y / getCellSizeAtZoom().h);
+
+            grid_ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
+            grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+
+            if (mouse_button === 2) {
+                grid_ctx.fillStyle = "rgba(255, 0, 0, 0.2)"
+                grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+            } else {
+
+                let tileId = Tilemap.selectedTile.value;
+
+                let tile = null;
+
+                if (tileId !== null) {
+                    tile = Tilemap.tileSets.value[0][tileId];
+                    if (tile) {
+                        let img = new Image();
+                        img.src = tile;
+
+                        grid_ctx.drawImage(
+                            img,
+                            x,
+                            y,
+                        );
+                    }
+                }
+            }
+        } else {
+            selected_cell_x.value = -1;
+            selected_cell_y.value = -1;
         }
-        let rect = grid.getBoundingClientRect();
-        let x = mouse_position.x - rect.left;
-        let y = mouse_position.y - rect.top;
 
-        x = Math.floor(x / getCellSizeAtZoom().w) * getCellSize().w;
-        y = Math.floor(y / getCellSizeAtZoom().h) * getCellSize().h;
+        if (mouse_is_clicked) {
 
-        grid_ctx.fillStyle = "rgba(0, 0, 0, 0.1)"
-        grid_ctx.fillRect(x, y, getCellSize().w, getCellSize().h);
+            let rect = canvas.getBoundingClientRect();
+            let x = mouse_position.x - rect.left;
+            let y = mouse_position.y - rect.top;
 
-        let tile = Tilemap.tileSets.value[0][Tilemap.selectedTile.value];
+            x = Math.floor(x / getCellSizeAtZoom().w);
+            y = Math.floor(y / getCellSizeAtZoom().h);
 
-        if (!tile) {
-            return;
+            let layerId = project.selectedLayer.value;
+
+            // return if out of bounds
+            if (x < 0 || x >= project.width || y < 0 || y >= project.height) {
+                return;
+            }
+
+            if (mouse_button === 0) {
+                project.layers.value[layerId].layer[y][x] = Tilemap.selectedTile.value;
+                drawLayers(project.layers.value);
+            } else if (mouse_button === 2) {
+                project.layers.value[layerId].layer[y][x] = null;
+                drawLayers(project.layers.value);
+            }
         }
-
-        let img = new Image();
-        img.src = tile;
-
-        grid_ctx.drawImage(
-            img,
-            x,
-            y,
-        );
 
     }, 50);
 
@@ -222,28 +279,26 @@ const loadProject = (project) => {
         mouse_position = {x: e.clientX, y: e.clientY};
     }
 
-    canvas_container.onclick = (e) => {
-        console.log('click');
-        let rect = canvas.getBoundingClientRect();
-        let x = e.clientX - rect.left;
-        let y = e.clientY - rect.top;
-
-        x = Math.floor(x / getCellSizeAtZoom().w);
-        y = Math.floor(y / getCellSizeAtZoom().h);
-
-        console.log(x, y);
-
-        project.layers.value[0].layer[y][x] = Tilemap.selectedTile.value;
-        drawLayers(project.layers.value);
+    canvas_container.onmousedown = (e) => {
+        mouse_button = e.button;
+        mouse_is_clicked = true;
     }
 
-    drawGrid();
+    canvas_container.onmouseup = (e) => {
+        mouse_button = null;
+        mouse_is_clicked = false;
+    }
 
+    canvas_container.oncontextmenu = (e) => {
+        e.preventDefault();
+    }
+
+    drawLayers(project.layers.value);
+    drawGrid();
 };
 
 BusEvent.getInstance().on('loadProjectCanvas', (project) => {
     loadProject(project);
-    drawLayers(project.layers.value);
 });
 
 let show = ProjectSingleton.getInstance().selectedProject;
@@ -252,6 +307,17 @@ let show = ProjectSingleton.getInstance().selectedProject;
 
 <template>
     <div id="canvas-component" v-bind:class="['h-100', (show !== null ? 'd-flex' : 'd-none')]">
+        <div id="canvas-tools" class="d-flex flex-row-reverse w-100">
+            <div class="btn-group" role="group" aria-label="">
+                <input type="checkbox" class="btn-check" id="grid-show" v-bind:checked="draw_grid" autocomplete="off" @click="draw_grid=!draw_grid" >
+                <label class="btn btn-outline-info" for="grid-show">Grid</label>
+            </div>
+            <div class="me-3 text-info mt-auto mb-auto">
+                X : {{ selected_cell_x === -1 ? '?' : selected_cell_x }} /
+                Y : {{ selected_cell_y === -1 ? '?' : selected_cell_y }}
+            </div>
+        </div>
+
         <div id="canvas-holder" class="w-100 h-100 overflow-hidden">
             <div id="canvas-container" class="">
                 <canvas id="canvas" width="500" height="500" class="bg-white"></canvas>
@@ -264,6 +330,7 @@ let show = ProjectSingleton.getInstance().selectedProject;
 <style scoped>
 
 #canvas-component {
+    position: relative;
     flex: 1 1 auto;
 }
 
@@ -279,6 +346,7 @@ let show = ProjectSingleton.getInstance().selectedProject;
     position: relative;
     width: 500px;
     height: 500px;
+    cursor: pointer;
 }
 
 #canvas {
@@ -297,5 +365,12 @@ let show = ProjectSingleton.getInstance().selectedProject;
     height: 100%;
     left: 0;
     top: 0;
+}
+
+#canvas-tools {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 </style>

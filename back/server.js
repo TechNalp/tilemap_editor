@@ -10,7 +10,7 @@ const security = require('./config/security.json')
 const mariadb = require('./config/modules/db')
 
 const app = express()
-const port = 80
+const port = 8080
 
 
 
@@ -148,5 +148,5 @@ app.get('*', (req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Vous pouvez accèder à l'applciation depuis http://localhost:${port}`)
 })
